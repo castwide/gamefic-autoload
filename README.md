@@ -1,24 +1,31 @@
 # Gamefic::Autoload
 
-TODO: Delete this and the text below, and describe your gem
+A Zeitwerk autoloader for Gamefic projects.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/gamefic/autoload`. To experiment with that code, run `bin/console` for an interactive prompt.
+Using Gamefic::Autoload gives the Gamefic::SDK a way to use autoloading in web apps.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+The Gamefic SDK installs gamefic-autoloader by default. If you need to set it up in a bespoke project, add it to your Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
+    gem 'gamefic-autoloader'
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+Then set it up in whatever directory needs autoloading (e.g., `lib/my_project.rb`):
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+```ruby
+require 'gamefic-autoload'
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+module MyProject
+  Gamefic::Autoload.setup(__dir__)
+end
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+Gamefic::Autoload sets up autoloading in your directory using standard Zeitwerk conventions. With the above example, you could define a class named `MyProject::MyClass` in
+`lib/my_project/my_class.rb`, and it would be automatically loaded without the need to `require` the file.
+
+For Opal-based web apps, The Gamefic SDK will create an `autoload.rb` file that preloads your files, classes, and modules in the same manner that Zeitwerk does.
 
 ## Development
 
