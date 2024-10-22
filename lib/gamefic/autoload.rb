@@ -5,6 +5,11 @@ require 'gamefic/autoload/version'
 require 'zeitwerk' unless RUBY_ENGINE == 'opal'
 
 module Gamefic
+  # A Zeitwerk autoloader for Gamefic.
+  #
+  # Gamefic::Autoload gives the Gamefic SDK a way to use Zeitwerk's code
+  # loading conventions in Opal-based web apps.
+  #
   module Autoload
     def self.setup(directory, namespace: Object)
       if RUBY_ENGINE == 'opal'
@@ -26,7 +31,7 @@ module Gamefic
     def self.encode(directory)
       history(directory).map do |hash|
         if File.file?(hash[:file])
-          path = hash[:file].sub(/^#{directory}\/?/, '').sub(/\.rb$/, '')
+          path = hash[:file].sub(%r{^#{directory}/?}, '').sub(/\.rb$/, '')
           "require '#{path}'"
         else
           "#{hash[:const].is_a?(Class) ? 'class ' : 'module'} #{hash[:const]}; end"
