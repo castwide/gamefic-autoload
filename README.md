@@ -22,10 +22,18 @@ end
 
 ## Usage
 
-Gamefic::Autoload sets up autoloading in your directory using standard Zeitwerk conventions. With the above example, you could define a class named `MyProject::MyClass` in
+Gamefic::Autoload sets up Zeitwerk autoload in your directory using standard Zeitwerk conventions. With the above example, you could define a class named `MyProject::MyClass` in
 `lib/my_project/my_class.rb`, and it would be automatically loaded without the need to `require` the file.
 
 For Opal-based web apps, The Gamefic SDK will create an `autoload.rb` file that preloads your files, classes, and modules in the same manner that Zeitwerk does.
+
+If you need to customize the autoloader, you can also pass an optional `namespace` and block to the `setup` method:
+
+```ruby
+Gamefic::Autoload.setup(__dir__, namespace: Object) do |loader|
+  loader.inflector.inflect("xml" => "XML")
+end
+```
 
 ## Development
 

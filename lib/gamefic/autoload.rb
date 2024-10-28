@@ -11,11 +11,11 @@ module Gamefic
   # loading conventions in Opal-based web apps.
   #
   module Autoload
-    def self.setup(directory, namespace: Object)
+    def self.setup(directory, namespace: Object, &block)
       if RUBY_ENGINE == 'opal'
         Gamefic.logger.info 'Opal engine detected - Gamefic::Autoload skipped'
       else
-        register_and_setup directory, namespace
+        register_and_setup directory, namespace, &block
       end
     end
 
@@ -44,7 +44,7 @@ module Gamefic
     end
 
     class << self
-      def register_and_setup(directory, namespace)
+      def register_and_setup(directory, namespace, &block)
         registry[directory] = Zeitwerk::Loader.new.tap do |loader|
           histories[directory] = []
           loader.push_dir directory, namespace: namespace
@@ -52,8 +52,10 @@ module Gamefic
             line = { name: name, const: const, file: file }
             histories[directory].push line
           end
+          block&.call(loader)
           loader.setup
-          loader.eager_load
+          # @todo Eager loading might not be necessary here
+          # loader.eager_load
         end
       end
 
