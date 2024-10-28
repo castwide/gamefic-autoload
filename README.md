@@ -1,14 +1,16 @@
 # Gamefic::Autoload
 
-A Zeitwerk autoloader for Gamefic projects.
+A [Zeitwerk](https://github.com/fxn/zeitwerk) autoloader for Gamefic projects.
 
 Using Gamefic::Autoload gives the Gamefic::SDK a way to use autoloading in web apps.
 
 ## Installation
 
-The Gamefic SDK installs gamefic-autoloader by default. If you need to set it up in a bespoke project, add it to your Gemfile:
+The Gamefic SDK installs gamefic-autoload by default. If you need to set it up in a bespoke project, add it to your Gemfile:
 
-    gem 'gamefic-autoloader'
+```ruby
+gem 'gamefic-autoloader'
+```
 
 Then set it up in whatever directory needs autoloading (e.g., `lib/my_project.rb`):
 
@@ -35,6 +37,8 @@ Gamefic::Autoload.setup(__dir__, namespace: Object) do |loader|
 end
 ```
 
+See the [Zeitwerk documentation](https://github.com/fxn/zeitwerk) for more information about configuring loaders.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -43,4 +47,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/gamefic-autoload.
+Bug reports and pull requests are welcome on GitHub at https://github.com/castwide/gamefic-autoload.

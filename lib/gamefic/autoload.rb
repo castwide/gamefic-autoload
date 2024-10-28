@@ -11,6 +11,13 @@ module Gamefic
   # loading conventions in Opal-based web apps.
   #
   module Autoload
+    # Enable autoloading in a directory. See the Zeitwerk documentation for
+    # more information.
+    #
+    # @param directory [String] The directory name
+    # @param namespace [Module] The directory's root namespace
+    # @yieldparam [Zeitwerk::Loader]
+    # @return [Zeitwerk::Loader]
     def self.setup(directory, namespace: Object, &block)
       if RUBY_ENGINE == 'opal'
         Gamefic.logger.info 'Opal engine detected - Gamefic::Autoload skipped'
@@ -19,15 +26,26 @@ module Gamefic
       end
     end
 
+    # A list of all the directories that use autoloading.
+    #
+    # @return [Array<String>]
     def self.registered
       registry.keys
     end
 
+    # The history of a directory's load events.
+    #
+    # @return [Array<Hash>]
     def self.history(directory)
       registry[directory].eager_load
       histories[directory]
     end
 
+    # Translate a directory's load history into lines of Ruby source code that
+    # can replicate the autoload process without Zeitwerk.
+    #
+    # @param directory [String]
+    # @return [Array<String>]
     def self.encode(directory)
       history(directory).map do |hash|
         if File.file?(hash[:file])
@@ -39,11 +57,16 @@ module Gamefic
       end
     end
 
+    # Encode all of the registered directories.
+    #
+    # @return [Array<String>]
     def self.encode_all
       registered.flat_map { |directory| encode(directory) }
     end
 
     class << self
+      private
+
       def register_and_setup(directory, namespace, &block)
         registry[directory] = Zeitwerk::Loader.new.tap do |loader|
           histories[directory] = []
@@ -54,8 +77,6 @@ module Gamefic
           end
           block&.call(loader)
           loader.setup
-          # @todo Eager loading might not be necessary here
-          # loader.eager_load
         end
       end
 
