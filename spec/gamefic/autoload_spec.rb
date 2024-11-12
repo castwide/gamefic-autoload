@@ -13,4 +13,11 @@ RSpec.describe Gamefic::Autoload do
     expect(codes).to include('module Project::Unnamed; end')
     expect(codes).to include("require 'project/unnamed/shortnamed'")
   end
+
+  describe '.setup' do
+    it 'returns the loader' do
+      loader = Gamefic::Autoload.setup(__dir__)
+      expect(loader).to be_a(Zeitwerk::Loader)
+    end
+  end
 end
